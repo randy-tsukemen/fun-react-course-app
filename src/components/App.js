@@ -3,24 +3,15 @@ import HomePage from "./HomePage";
 import AboutPage from "./AboutPage";
 import CoursesPage from "./CoursesPage";
 import Header from "./common/Header";
+import { Route } from "react-router-dom";
 
 function App() {
-    function getPage() {
-        switch (window.location.pathname) {
-            case "/":
-                return <HomePage />;
-            case "/about":
-                return <AboutPage />;
-            case "/courses":
-                return <CoursesPage />;
-            default:
-                return null;
-        }
-    }
     return (
         <div className="container-fluid">
             <Header />
-            {getPage()}
+            <Route exact path="/" component={HomePage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/courses" component={CoursesPage} />
         </div>
     );
 }
