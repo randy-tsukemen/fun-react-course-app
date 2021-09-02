@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 // import { Prompt } from "react-router-dom";
 
 const ManageCoursePage = (props) => {
+    const [error, setError] = useState({});
     const [course, setCourse] = useState({
         id: null,
         slug: "",
@@ -22,16 +23,28 @@ const ManageCoursePage = (props) => {
 
     function handleSubmit(event) {
         event.preventDefault();
+        if (!formIsValid()) return;
         courseApi.saveCourse(course).then(() => {
             props.history.push("/courses");
             toast.success("Course saved.");
         });
     }
 
+    function formIsValid() {
+        const { title, authorId, category } = course;
+        const errors = {};
+        if (!title) errors.title = "Title is required.";
+        if (!authorId) errors.authorId = "Author is required.";
+        if (!category) errors.category = "Category is required.";
+        setError(errors);
+        return Object.keys(errors).length === 0;
+    }
+
     return (
         <>
             <h2>Manage Course</h2>
             <CourseForm
+                errors={error}
                 course={course}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
